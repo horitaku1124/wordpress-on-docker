@@ -1,0 +1,28 @@
+
+services:
+  wp-app:
+    image: wp-app
+    ports:
+      - 9000:80
+    depends_on:
+      - wp-db
+    volumes:
+      - ./my-blog-theme:/var/www/html/wp-content/themes/my-blog-theme
+  wp-db:
+    image: mariadb:10.6
+    restart: always
+
+    ports:
+      - 9001:3306
+    environment:
+      MYSQL_DATABASE: wordpress
+      MARIADB_USER: wordpress_db_user
+      MARIADB_PASSWORD: wordpress_db_password
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
+
+      TZ: Asia/Tokyo
+    volumes:
+      - wp-db-data:/var/lib/mysql
+
+volumes:
+  wp-db-data:
